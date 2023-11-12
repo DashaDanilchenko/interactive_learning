@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface TimeProps {
   ms: number,
@@ -9,13 +9,20 @@ interface TimeProps {
 
 const StopWatch = () => {
 
-  const [time, setTime] = useState<TimeProps>({ms:0, s:0, m:0, h:0})
   const [interv, setInterv] = useState<{} | any>({})
 
-  const start = () => {
-    run();
-    setInterv (setInterval(run, 10))
-  }
+  const [time, setTime] = useState<TimeProps>(() => {
+    return (JSON.parse(localStorage.getItem('time')|| "")) || {ms:0, s:0, m:0, h:0}
+  })
+
+  const [stateTime, setStateTime] = useState(() => {
+    return (JSON.parse(localStorage.getItem('stateTime')|| "")) || (false)
+  })
+
+  useEffect (() => {
+    localStorage.setItem('stateTime', JSON.stringify(stateTime)) 
+    localStorage.setItem('time', JSON.stringify(time))
+  }, [time, stateTime])
 
   let updatedMs = time.ms, updatedS = time.s, updatedM = time.m, updatedH = time.h
 
@@ -35,10 +42,35 @@ const StopWatch = () => {
     updatedMs++
     return setTime ({ms:updatedMs, s:updatedS, m:updatedM, h:updatedH})
   }
-  const stop = () => {
-   clearInterval(interv)
-    
+
+  const startTime = () => {
+    run();
+    setInterv (setInterval(run, 1))
+  } 
+
+  const stopTime = () => {
+    if (interv)
+    {clearInterval(interv)}
+   return setTime ({ms:0, s:0, m:0, h:0})
   }
+
+  const start = () => {
+    setStateTime(true)
+    startTime()
+  }
+
+  const stop = () => {
+    setStateTime(false)
+    stopTime()
+  }
+
+  window.addEventListener('load', () => {
+    stateTime ? startTime() : stopTime();
+  });
+
+  console.log(localStorage)
+
+  // localStorage.clear()
 
   return (
     <div >
