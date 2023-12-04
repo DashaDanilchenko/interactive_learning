@@ -4,6 +4,9 @@ export const exercises: PropsAccordion[] = [
 {
     id : '1',
     title: 'порівняйте',
+    create: false,
+    time: '',
+    answerUser: false,
     task: {
         context:'2 > 6 ?',
         answers: [
@@ -21,6 +24,9 @@ export const exercises: PropsAccordion[] = [
 {
     id : '2',
     title: 'порівняйте',
+    create: false,
+    time: '',
+    answerUser: false,
     task: {
         context:'8 > 5 ?',
         answers: [
@@ -38,6 +44,9 @@ export const exercises: PropsAccordion[] = [
 {
     id : '3',
     title: 'порівняйте',
+    create: false,
+    time: '',
+    answerUser: false,
     task: {
         context:'7 < 9 ?',
         answers: [

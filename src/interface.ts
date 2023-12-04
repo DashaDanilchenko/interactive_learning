@@ -11,5 +11,10 @@ export interface PropsTask {
 export interface PropsAccordion {
     id: string,
     title: string,
+    create: boolean,
+    time: string,
+    answerUser: boolean,
     task: PropsTask,
   }
+
+  

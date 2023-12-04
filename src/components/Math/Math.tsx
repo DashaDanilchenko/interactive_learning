@@ -1,27 +1,119 @@
-import { useState } from "react";
+
 import { Accordion } from "../../elements/Accordion/Accordion"
 import {exercises} from "../../data/math/dataMath"
 import {PropsAccordion} from "../../interface"
-import StopWatch from "../../elements/Clock/Clock";
+import { useState, useEffect } from "react"
 
+interface TimeProps {
+  ms: number,
+  s: number,
+  m: number,
+  h: number,
+}
 
 const Math = () => {
 
-  const [activeElement, setActiveElement] = useState<string>('')
-  function deActiveElement (id:string) {
-    if (id === activeElement) {
-      setActiveElement("")
+    const [dataExercises, setDataExercises] = useState<PropsAccordion[]>(() => {
+      if (localStorage.getItem('dataExercises')) {
+        return (JSON.parse(localStorage.getItem('dataExercises') || ''))
+      } else {
+        return exercises
+      }
+    })
+
+    const [activeElement, setActiveElement] = useState<string>(() => {
+      if (localStorage.getItem('activeElement')) {
+        return (JSON.parse(localStorage.getItem('activeElement') || ''))
+      } else {
+        return ''
+      }
+    })
+
+    const [interv, setInterv] = useState<any>()
+
+    const [time, setTime] = useState<TimeProps>(() => {
+      if (localStorage.getItem('time')) {
+        return (JSON.parse(localStorage.getItem('time') || ''))
+      } else {
+        return {ms:0, s:0, m:0, h:0}
+      }
+    })
+  
+    const [stateTime, setStateTime] = useState(() => {
+      if (localStorage.getItem('stateTime')) {
+        return (JSON.parse(localStorage.getItem('stateTime') || ''))
+      } else {
+        return false
+      }
+    })
+
+    useEffect (() => {
+      localStorage.setItem('dataExercises', JSON.stringify(dataExercises)) 
+      localStorage.setItem('activeElement', JSON.stringify(activeElement))
+      localStorage.setItem('stateTime', JSON.stringify(stateTime)) 
+    localStorage.setItem('time', JSON.stringify(time))
+    }, [time, stateTime ,activeElement, dataExercises])
+
+    let updatedMs = time.ms, updatedS = time.s, updatedM = time.m, updatedH = time.h
+
+    const run = () => {
+      if (updatedM === 60) {
+        updatedH++;
+        updatedM = 0
+      }
+      if (updatedS === 60) {
+        updatedM++;
+        updatedS = 0
+      }
+      if (updatedMs === 100) {
+        updatedS++;
+        updatedMs = 0
+      }
+      updatedMs++
+      return setTime ({ms:updatedMs, s:updatedS, m:updatedM, h:updatedH})
     }
-  }
+  
+    const startTime = () => {
+      run();
+      setInterv (setInterval(run, 1))
+      console.log(localStorage)
+    } 
+  
+    const stopTime = () => {
+      clearInterval(interv)
+      return setTime ({ms:0, s:0, m:0, h:0})
+    }
+  
+     const chengeActiveElement = (id:string) => {
+      if (activeElement === '') {
+        setStateTime(true)
+        startTime()
+        return setActiveElement(id)
+      }
+     }
+  
+     const getInfo = (id:string) => {
+     
+      if (id === activeElement) {
+        stopTime()
+        return  setActiveElement('')
+      }
+     }
+  
+    window.addEventListener('load', () => {
+      stateTime ? startTime() : stopTime();
+    });
 
   return (
     <div>
-   {exercises.map((exercise:PropsAccordion, index:number) => <Accordion key={index} 
+      <p>{activeElement}</p>
+   {dataExercises.map((exercise:PropsAccordion, index:number) => <Accordion key={index} 
    exercise={exercise} 
-   activeElement={activeElement} 
-   setActiveElement={setActiveElement}
-   deActiveElement={deActiveElement}/>)}
-   <StopWatch/>
+   activeElement = {activeElement} 
+   chengeActiveElement= {chengeActiveElement}
+   getInfo = {getInfo}
+   time = {time}
+   />)}
     </div>
   )
 }
