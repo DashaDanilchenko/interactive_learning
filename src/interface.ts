@@ -14,6 +14,7 @@ export interface PropsAccordion {
     id: string,
     title: string,
     time: string,
+    create: boolean,
     answerUser: boolean,
     task: PropsTask,
   }

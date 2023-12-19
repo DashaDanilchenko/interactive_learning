@@ -14,11 +14,8 @@ interface Props {
   exercise: PropsAccordion;
   activeElement:string;
   chengeActiveElement:(id: string) => void;
-  getInfo:(id:string) => void;
+  getInfo:(id:string, create: boolean) => void;
   time: TimeProps;
-  // changeStateAnswer: (answers: PropsValue[], id:string, id_from_answer:string, done:boolean) => void
-  // dataExercises : PropsAccordion[];
-  // setDataExercises:() => void;
 }
 
 
@@ -27,26 +24,21 @@ export const Accordion= ({exercise,
   chengeActiveElement, 
   getInfo, 
   time,
-  // changeStateAnswer,
-  // dataExercises,
-  // setDataExercises,
 }: Props) => {
   
-  const {title, task, id} = exercise
+  const {title, task, id, create} = exercise
 
   return (
     <div>
       <HeaderAccordion title={title} id={id} 
       chengeActiveElement={chengeActiveElement} 
-      
+      create={create}
       />
       <ContextAccordion task={task} id={id}  
       activeElement={activeElement}
       time={time}
       getInfo={getInfo}
-      // changeStateAnswer = {changeStateAnswer}
-  //     dataExercises = {dataExercises}
-  // setDataExercises = {setDataExercises}
+      create={create}
       />
     </div>
   )

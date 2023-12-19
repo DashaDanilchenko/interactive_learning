@@ -1,19 +1,9 @@
 import { text } from "stream/consumers"
 import { PropsAccordion, PropsTask, PropsValue } from "../../interface"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import StopWatch from "../Clock/Clock"
 import { useAppDispatch } from "../../hooks"
 import { stateAnswer } from "../../story/sliceMath"
-// import { TimeProps } from "../../interface"
-
-// interface TimePropsAction {
-//   ms: number,
-//   s: number,
-//   m: number,
-//   h: number,
-// }
-
-console.log(localStorage)
 
 
 
@@ -27,32 +17,28 @@ interface Props {
       m: number,
       h: number,
     },
-    getInfo: (id: string) => void, 
-    // changeStateAnswer: (answers: PropsValue[], id:string, id_from_answer:string, done:boolean) => void,
-    // dataExercises: PropsAccordion[],
-    // setDataExercises: () => void, 
+    getInfo: (id: string, create: boolean) => void, 
+    create: boolean,
 }
-
-interface Data {
-  data: boolean,
-  // id: string,
-}
-
 
 
 export const ContextAccordion = ({task, id,
    activeElement, time, getInfo,
-  //  changeStateAnswer,
+   create
   }: Props) => {
   const {context, answers} = task
 
   const dispatch = useAppDispatch()
 
-  const changeStateAnswer = (id:string, id_from_answer:string, done:boolean, correct: boolean) =>{
-    dispatch(stateAnswer({id, id_from_answer, done, correct}))
-  }
+  const [stateButton, setStateButton] = useState(false)
 
-  
+  useEffect(() => {
+    setStateButton(!answers.some(answer => answer.done === true))
+  }, [answers])
+
+  const changeStateAnswer = (id:string, id_from_answer:string, done:boolean, correct: boolean) =>{
+    dispatch(stateAnswer({id, id_from_answer, done, correct})) 
+  }
 
   return (
     <div
@@ -67,7 +53,7 @@ export const ContextAccordion = ({task, id,
       </div>
      </div>
      )}
-     <button onClick={() => getInfo(id)}>get</button>
+     <button disabled={stateButton}  onClick={() => getInfo(id, create)}>get</button>
      
      <StopWatch time={time}/>
     </div>

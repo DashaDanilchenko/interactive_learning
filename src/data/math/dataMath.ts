@@ -1,10 +1,11 @@
-import { PropsAccordion } from "../../interface"
+
 
 export const exercises = [
 {
     id : '1',
     title: 'порівняйте',
     time: '',
+    create: false,
     answerUser: false,
     task: {
         context:'2 > 6 ?',
@@ -28,6 +29,7 @@ export const exercises = [
     id : '2',
     title: 'порівняйте',
     time: '',
+    create: false,
     answerUser: false,
     task: {
         context:'8 > 5 ?',
@@ -51,6 +53,7 @@ export const exercises = [
     id : '3',
     title: 'порівняйте',
     time: '',
+    create: false,
     answerUser: false,
     task: {
         context:'7 < 9 ?',

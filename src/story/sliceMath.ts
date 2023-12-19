@@ -9,14 +9,6 @@ const exercisesSlice = createSlice({
         exercises: exercises,
 
     },
-
-  //   answers: exercis.task.answers.map((answer:PropsValue) => {
-  //     return answer.answer_id === action.payload.id_from_answer
-  //         ? {...answer, text: 'y'}  
-  //         : {...answer, text: 'n'}  
-  // }) 
-
-    
     
     reducers: {
 
@@ -41,7 +33,6 @@ const exercisesSlice = createSlice({
         },
 
         stateTimeAnswer(state, action) {
-            // console.log(action.payload)
             state.exercises = state.exercises.map(exercis => {
                           if (exercis.id !== action.payload.id) {
                             return exercis;
@@ -52,7 +43,7 @@ const exercisesSlice = createSlice({
                             ${action.payload.time.m} : 
                             ${action.payload.time.s} : 
                             ${action.payload.time.ms}
-                            `}
+                            `, create: true}
                         })
         },
         

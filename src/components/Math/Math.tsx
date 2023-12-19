@@ -21,24 +21,6 @@ const Math = () => {
 
   const dispatch = useAppDispatch()
 
-  // const [dataExercises, setDataExercises] = useState<PropsAccordion[]>(() => {
-  //   if (localStorage.getItem('dataExercises')) {
-  //     return (JSON.parse(localStorage.getItem('dataExercises') || ''))
-  //   } else {
-  //     return exercises
-  //   }
-  // })
-
-  // const [answersItem, setAnswersItem] = useState<PropsValue[]>([
-  //   {
-  //     answer_id: '1_1',
-  //     text: 'not',
-  //     correct: true,
-  //     done: true,
-  // },
-  
-  // ])
-
     const [activeElement, setActiveElement] = useState<string>(() => {
       if (localStorage.getItem('activeElement')) {
         return (JSON.parse(localStorage.getItem('activeElement') || ''))
@@ -66,7 +48,6 @@ const Math = () => {
     })
 
     useEffect (() => {
-      // localStorage.setItem('dataExercises', JSON.stringify(dataExercises)) 
       localStorage.setItem('activeElement', JSON.stringify(activeElement))
       localStorage.setItem('stateTime', JSON.stringify(stateTime)) 
     localStorage.setItem('time', JSON.stringify(time))
@@ -109,30 +90,19 @@ const Math = () => {
       }
      }
   
-     const getInfo = (id:string) => {
+     const getInfo = (id:string, create: boolean) => {
      
-      // if (id === activeElement) {
+      if (id === activeElement) {
         stopTime()
-        dispatch(stateTimeAnswer({id, time}))
+        dispatch(stateTimeAnswer({id, time, create}))
         return  setActiveElement('')
-      // }
-      
-     }
+      }}
   
     window.addEventListener('load', () => {
       stateTime ? startTime() : stopTime();
     });
 
     const dataExercises = useAppSelector((state) => state.exercises.exercises)
-    // console.log(dataExercises)
-    
-    // const changeStateAnswer = ( id:string, id_from_answer:string, done:boolean) =>{
-      
-    //   }
-     
-      
-     
- 
 
   return (
     <div>
@@ -142,9 +112,6 @@ const Math = () => {
    chengeActiveElement= {chengeActiveElement}
    getInfo = {getInfo}
    time = {time}
-  //  changeStateAnswer = {changeStateAnswer}
-  //  dataExercises ={dataExercises}
-  //  setDataExercises = {setDataExercises}
    />)}
    <button >get resalt</button>
     </div>
