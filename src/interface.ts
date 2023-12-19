@@ -1,6 +1,8 @@
-interface PropsValue {
+export interface PropsValue {
+  answer_id: string,
   text: string,
   correct: boolean,
+  done: boolean,
 }
 
 export interface PropsTask {
@@ -11,7 +13,6 @@ export interface PropsTask {
 export interface PropsAccordion {
     id: string,
     title: string,
-    create: boolean,
     time: string,
     answerUser: boolean,
     task: PropsTask,

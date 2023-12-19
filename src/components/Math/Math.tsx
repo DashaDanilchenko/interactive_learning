@@ -1,8 +1,14 @@
 
 import { Accordion } from "../../elements/Accordion/Accordion"
-import {exercises} from "../../data/math/dataMath"
-import {PropsAccordion} from "../../interface"
+import { useAppDispatch, useAppSelector } from "../../hooks"
+// import {exercises} from "../../data/math/dataMath"
+import {PropsAccordion, PropsValue} from "../../interface"
 import { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { stateTimeAnswer } from "../../story/sliceMath"
+import { exercises } from "../../data/math/dataMath"
+
+// localStorage.clear()
 
 interface TimeProps {
   ms: number,
@@ -13,13 +19,25 @@ interface TimeProps {
 
 const Math = () => {
 
-    const [dataExercises, setDataExercises] = useState<PropsAccordion[]>(() => {
-      if (localStorage.getItem('dataExercises')) {
-        return (JSON.parse(localStorage.getItem('dataExercises') || ''))
-      } else {
-        return exercises
-      }
-    })
+  const dispatch = useAppDispatch()
+
+  // const [dataExercises, setDataExercises] = useState<PropsAccordion[]>(() => {
+  //   if (localStorage.getItem('dataExercises')) {
+  //     return (JSON.parse(localStorage.getItem('dataExercises') || ''))
+  //   } else {
+  //     return exercises
+  //   }
+  // })
+
+  // const [answersItem, setAnswersItem] = useState<PropsValue[]>([
+  //   {
+  //     answer_id: '1_1',
+  //     text: 'not',
+  //     correct: true,
+  //     done: true,
+  // },
+  
+  // ])
 
     const [activeElement, setActiveElement] = useState<string>(() => {
       if (localStorage.getItem('activeElement')) {
@@ -48,11 +66,11 @@ const Math = () => {
     })
 
     useEffect (() => {
-      localStorage.setItem('dataExercises', JSON.stringify(dataExercises)) 
+      // localStorage.setItem('dataExercises', JSON.stringify(dataExercises)) 
       localStorage.setItem('activeElement', JSON.stringify(activeElement))
       localStorage.setItem('stateTime', JSON.stringify(stateTime)) 
     localStorage.setItem('time', JSON.stringify(time))
-    }, [time, stateTime ,activeElement, dataExercises])
+    }, [time, stateTime ,activeElement])
 
     let updatedMs = time.ms, updatedS = time.s, updatedM = time.m, updatedH = time.h
 
@@ -76,7 +94,6 @@ const Math = () => {
     const startTime = () => {
       run();
       setInterv (setInterval(run, 1))
-      console.log(localStorage)
     } 
   
     const stopTime = () => {
@@ -94,28 +111,45 @@ const Math = () => {
   
      const getInfo = (id:string) => {
      
-      if (id === activeElement) {
+      // if (id === activeElement) {
         stopTime()
+        dispatch(stateTimeAnswer({id, time}))
         return  setActiveElement('')
-      }
+      // }
+      
      }
   
     window.addEventListener('load', () => {
       stateTime ? startTime() : stopTime();
     });
 
+    const dataExercises = useAppSelector((state) => state.exercises.exercises)
+    // console.log(dataExercises)
+    
+    // const changeStateAnswer = ( id:string, id_from_answer:string, done:boolean) =>{
+      
+    //   }
+     
+      
+     
+ 
+
   return (
     <div>
-      <p>{activeElement}</p>
-   {dataExercises.map((exercise:PropsAccordion, index:number) => <Accordion key={index} 
+   {dataExercises.map((exercise: PropsAccordion, index:number) => <Accordion key={index} 
    exercise={exercise} 
    activeElement = {activeElement} 
    chengeActiveElement= {chengeActiveElement}
    getInfo = {getInfo}
    time = {time}
+  //  changeStateAnswer = {changeStateAnswer}
+  //  dataExercises ={dataExercises}
+  //  setDataExercises = {setDataExercises}
    />)}
+   <button >get resalt</button>
     </div>
   )
 }
 
 export default Math
+
