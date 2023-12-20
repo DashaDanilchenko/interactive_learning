@@ -37,13 +37,13 @@ export const exercises = [
             {
                 answer_id: '2_1',
                 text: 'yes',
-                correct: false,
+                correct: true,
                 done: false,
             },
             {
                 answer_id: '2_2',
                 text: 'not',
-                correct: true,
+                correct: false,
                 done: false,
             }
         ],

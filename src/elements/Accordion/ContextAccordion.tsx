@@ -17,14 +17,14 @@ interface Props {
       m: number,
       h: number,
     },
-    getInfo: (id: string, create: boolean) => void, 
-    create: boolean,
+    getInfo: (id: string) => void, 
+
 }
 
 
 export const ContextAccordion = ({task, id,
    activeElement, time, getInfo,
-   create
+  
   }: Props) => {
   const {context, answers} = task
 
@@ -53,7 +53,7 @@ export const ContextAccordion = ({task, id,
       </div>
      </div>
      )}
-     <button disabled={stateButton}  onClick={() => getInfo(id, create)}>get</button>
+     <button disabled={stateButton}  onClick={() => getInfo(id)}>get</button>
      
      <StopWatch time={time}/>
     </div>

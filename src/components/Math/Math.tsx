@@ -7,6 +7,7 @@ import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { stateTimeAnswer } from "../../story/sliceMath"
 import { exercises } from "../../data/math/dataMath"
+import { Resalt } from "./Resalt"
 
 // localStorage.clear()
 
@@ -20,6 +21,14 @@ interface TimeProps {
 const Math = () => {
 
   const dispatch = useAppDispatch()
+
+  const [resalt, setResalt] = useState(false)
+
+  const [stateResalt, setStateResalt] = useState(true)
+
+  useEffect(() => {
+    setStateResalt(dataExercises.some(data => data.create === false))
+  })
 
     const [activeElement, setActiveElement] = useState<string>(() => {
       if (localStorage.getItem('activeElement')) {
@@ -90,11 +99,11 @@ const Math = () => {
       }
      }
   
-     const getInfo = (id:string, create: boolean) => {
+     const getInfo = (id:string) => {
      
       if (id === activeElement) {
         stopTime()
-        dispatch(stateTimeAnswer({id, time, create}))
+        dispatch(stateTimeAnswer({id, time}))
         return  setActiveElement('')
       }}
   
@@ -105,16 +114,26 @@ const Math = () => {
     const dataExercises = useAppSelector((state) => state.exercises.exercises)
 
   return (
-    <div>
-   {dataExercises.map((exercise: PropsAccordion, index:number) => <Accordion key={index} 
-   exercise={exercise} 
-   activeElement = {activeElement} 
-   chengeActiveElement= {chengeActiveElement}
-   getInfo = {getInfo}
-   time = {time}
-   />)}
-   <button >get resalt</button>
-    </div>
+<div>
+  {resalt
+  ?  <div>
+  <button onClick={() => setResalt(false)}>x</button>
+  {dataExercises.map((exercise: PropsAccordion, index:number) => <Resalt key={index} exercise={exercise}/>)}
+  </div> 
+  : <div>
+  {dataExercises.map((exercise: PropsAccordion, index:number) => <Accordion key={index} 
+  exercise={exercise} 
+  activeElement = {activeElement} 
+  chengeActiveElement= {chengeActiveElement}
+  getInfo = {getInfo}
+  time = {time}
+  />)}
+  <button disabled={stateResalt} onClick={() => setResalt(true)}>get resalt</button>
+   </div>
+  }
+</div>
+    
+   
   )
 }
 

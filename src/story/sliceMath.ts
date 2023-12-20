@@ -19,7 +19,9 @@ const exercisesSlice = createSlice({
                 if (exercis.id !== action.payload.id) {
                   return exercis;
                 }
-                return { ...exercis, task: {
+                return { ...exercis,
+                  answerUser: action.payload.correct,
+                  task: {
                   ...exercis.task , answers: exercis.task.answers.map(answer => {
                     return answer.answer_id === action.payload.id_from_answer
                       ? {...answer, done: !action.payload.done, correct: action.payload.correct}  
@@ -43,7 +45,8 @@ const exercisesSlice = createSlice({
                             ${action.payload.time.m} : 
                             ${action.payload.time.s} : 
                             ${action.payload.time.ms}
-                            `, create: true}
+                            `, create: true
+                          }
                         })
         },
         

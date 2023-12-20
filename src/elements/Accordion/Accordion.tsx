@@ -14,7 +14,7 @@ interface Props {
   exercise: PropsAccordion;
   activeElement:string;
   chengeActiveElement:(id: string) => void;
-  getInfo:(id:string, create: boolean) => void;
+  getInfo:(id:string) => void;
   time: TimeProps;
 }
 
@@ -26,7 +26,7 @@ export const Accordion= ({exercise,
   time,
 }: Props) => {
   
-  const {title, task, id, create} = exercise
+  const {title, task, id, create, answerUser} = exercise
 
   return (
     <div>
@@ -38,7 +38,6 @@ export const Accordion= ({exercise,
       activeElement={activeElement}
       time={time}
       getInfo={getInfo}
-      create={create}
       />
     </div>
   )
